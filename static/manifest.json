@@ -1,0 +1,17 @@
+{
+  "name": "ArXiv for Dummies",
+  "short_name": "ArXivDummies",
+  "description": "Học bài báo khoa học dễ dàng cùng AI",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0a1a",
+  "theme_color": "#8b5cf6",
+  "icons": [
+    {
+      "src": "/static/icon.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
