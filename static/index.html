@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ArXiv for Dummies — Hiểu bài báo khoa học dễ dàng</title>
+    <meta name="description" content="Dán link ArXiv hoặc upload PDF, nhận bài giảng dễ hiểu bằng tiếng Việt. AI giải thích bài báo khoa học cho người mới bắt đầu.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <!-- Animated background -->
+    <div class="bg-gradient"></div>
+    <div class="particles" id="particles"></div>
+
+    <!-- Main container -->
+    <div class="container">
+
+        <!-- Header -->
+        <header class="header" id="header">
+            <div class="logo">
+                <div class="logo-icon">
+                    <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="4" y="4" width="32" height="32" rx="8" stroke="currentColor" stroke-width="2.5"/>
+                        <path d="M12 28V14L20 10L28 14V28" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M12 20H28" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        <circle cx="20" cy="16" r="2" fill="currentColor"/>
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="logo-text">ArXiv <span class="accent">for Dummies</span></h1>
+                    <p class="logo-subtitle">AI giải thích bài báo khoa học cho bạn</p>
+                </div>
+            </div>
+        </header>
+
+        <!-- Input Section -->
+        <section class="input-section" id="input-section">
+            <div class="input-card glass-card">
+                <h2 class="input-title">Bạn muốn hiểu bài báo nào?</h2>
+                <p class="input-desc">Dán link ArXiv hoặc upload file PDF — AI sẽ tạo bài giảng dễ hiểu cho bạn</p>
+
+                <!-- Tab switcher -->
+                <div class="tab-switcher">
+                    <button class="tab-btn active" data-tab="url" id="tab-url">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+                            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+                        </svg>
+                        Link ArXiv
+                    </button>
+                    <button class="tab-btn" data-tab="pdf" id="tab-pdf">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                            <polyline points="14 2 14 8 20 8"/>
+                        </svg>
+                        Upload PDF
+                    </button>
+                </div>
+
+                <!-- URL Input -->
+                <div class="tab-content active" id="content-url">
+                    <form id="url-form" class="url-form">
+                        <div class="input-wrapper">
+                            <input 
+                                type="text" 
+                                id="arxiv-url" 
+                                class="url-input" 
+                                placeholder="https://arxiv.org/abs/2401.00001" 
+                                autocomplete="off"
+                                spellcheck="false"
+                            >
+                            <button type="submit" class="submit-btn" id="url-submit-btn">
+                                <span class="btn-text">Phân tích</span>
+                                <svg class="btn-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="5" y1="12" x2="19" y2="12"/>
+                                    <polyline points="12 5 19 12 12 19"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <p class="input-hint">Hỗ trợ: arxiv.org/abs/..., arxiv.org/pdf/..., hoặc chỉ ID (2401.00001)</p>
+                    </form>
+                </div>
+
+                <!-- PDF Upload -->
+                <div class="tab-content" id="content-pdf">
+                    <div class="drop-zone" id="drop-zone">
+                        <div class="drop-zone-content">
+                            <svg class="drop-icon" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                <polyline points="17 8 12 3 7 8"/>
+                                <line x1="12" y1="3" x2="12" y2="15"/>
+                            </svg>
+                            <p class="drop-text">Kéo thả file PDF vào đây</p>
+                            <p class="drop-subtext">hoặc <span class="browse-link">chọn file</span></p>
+                            <input type="file" id="pdf-input" accept=".pdf" hidden>
+                        </div>
+                        <div class="drop-zone-selected" id="drop-zone-selected" style="display:none;">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                <polyline points="14 2 14 8 20 8"/>
+                            </svg>
+                            <span class="selected-filename" id="selected-filename"></span>
+                            <button class="remove-file" id="remove-file" type="button">&times;</button>
+                        </div>
+                    </div>
+                    <button class="submit-btn full-width" id="pdf-submit-btn" disabled>
+                        <span class="btn-text">Phân tích PDF</span>
+                        <svg class="btn-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="5" y1="12" x2="19" y2="12"/>
+                            <polyline points="12 5 19 12 12 19"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Loading Section -->
+        <section class="loading-section" id="loading-section" style="display:none;">
+            <div class="loading-card glass-card">
+                <div class="loading-animation">
+                    <div class="loading-ring"></div>
+                    <div class="loading-brain">🧠</div>
+                </div>
+                <h3 class="loading-title">Đang phân tích bài báo...</h3>
+                <p class="loading-desc" id="loading-desc">AI đang đọc và tạo bài giảng cho bạn. Quá trình này mất khoảng 30-60 giây.</p>
+                <div class="loading-steps">
+                    <div class="loading-step active" id="step-fetch">
+                        <div class="step-dot"></div>
+                        <span>Tải bài báo</span>
+                    </div>
+                    <div class="loading-step" id="step-extract">
+                        <div class="step-dot"></div>
+                        <span>Trích xuất nội dung</span>
+                    </div>
+                    <div class="loading-step" id="step-analyze">
+                        <div class="step-dot"></div>
+                        <span>AI phân tích</span>
+                    </div>
+                    <div class="loading-step" id="step-generate">
+                        <div class="step-dot"></div>
+                        <span>Tạo bài giảng</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Results Section -->
+        <section class="results-section" id="results-section" style="display:none;">
+
+            <!-- Paper Header -->
+            <div class="paper-header glass-card" id="paper-header">
+                <div class="paper-meta">
+                    <span class="paper-badge">📄 ArXiv Paper</span>
+                    <a href="#" class="paper-link" id="paper-pdf-link" target="_blank" rel="noopener">Xem PDF gốc →</a>
+                </div>
+                <h2 class="paper-title" id="paper-title"></h2>
+                <p class="paper-title-vi" id="paper-title-vi"></p>
+                <p class="paper-authors" id="paper-authors"></p>
+                <button class="new-paper-btn" id="new-paper-btn">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+                    </svg>
+                    Phân tích bài khác
+                </button>
+            </div>
+
+            <!-- Navigation Tabs -->
+            <div class="result-tabs" id="result-tabs">
+                <button class="result-tab active" data-section="tldr">🎯 TL;DR</button>
+                <button class="result-tab" data-section="eli5">🧒 ELI5</button>
+                <button class="result-tab" data-section="concepts">🔑 Khái niệm</button>
+                <button class="result-tab" data-section="sections">📖 Chi tiết</button>
+                <button class="result-tab" data-section="novelty">💡 Điểm mới</button>
+                <button class="result-tab" data-section="quiz">❓ Quiz</button>
+            </div>
+
+            <!-- Tab Contents -->
+            <div class="result-content">
+
+                <!-- TL;DR -->
+                <div class="result-panel active" id="panel-tldr">
+                    <div class="panel-card glass-card">
+                        <div class="panel-header">
+                            <h3>🎯 Tóm tắt nhanh (TL;DR)</h3>
+                            <button class="copy-btn" data-target="tldr-text" title="Copy">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                            </button>
+                        </div>
+                        <div class="panel-body">
+                            <p class="tldr-text" id="tldr-text"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ELI5 -->
+                <div class="result-panel" id="panel-eli5">
+                    <div class="panel-card glass-card">
+                        <div class="panel-header">
+                            <h3>🧒 Giải thích đơn giản (ELI5)</h3>
+                            <button class="copy-btn" data-target="eli5-text" title="Copy">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                            </button>
+                        </div>
+                        <div class="panel-body">
+                            <div class="eli5-bubble">
+                                <div class="eli5-avatar">🧒</div>
+                                <p class="eli5-question">Bài báo này nói về cái gì vậy?</p>
+                            </div>
+                            <div class="eli5-bubble reply">
+                                <div class="eli5-avatar">🤖</div>
+                                <p class="eli5-text" id="eli5-text"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Key Concepts -->
+                <div class="result-panel" id="panel-concepts">
+                    <div class="panel-card glass-card">
+                        <div class="panel-header">
+                            <h3>🔑 Khái niệm chính</h3>
+                        </div>
+                        <div class="panel-body">
+                            <div class="concepts-grid" id="concepts-grid"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section Deep Dive -->
+                <div class="result-panel" id="panel-sections">
+                    <div class="panel-body sections-deep-dive" id="sections-deep-dive"></div>
+                </div>
+
+                <!-- Novelty -->
+                <div class="result-panel" id="panel-novelty">
+                    <div class="panel-card glass-card">
+                        <div class="panel-header">
+                            <h3>💡 Điểm mới & Đóng góp</h3>
+                            <button class="copy-btn" data-target="novelty-text" title="Copy">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                            </button>
+                        </div>
+                        <div class="panel-body">
+                            <p class="novelty-text" id="novelty-text"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quiz -->
+                <div class="result-panel" id="panel-quiz">
+                    <div class="panel-card glass-card">
+                        <div class="panel-header">
+                            <h3>❓ Quiz — Kiểm tra hiểu bài</h3>
+                            <div class="quiz-score" id="quiz-score" style="display:none;">
+                                <span id="score-text"></span>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <div class="quiz-container" id="quiz-container"></div>
+                            <button class="reset-quiz-btn" id="reset-quiz-btn" style="display:none;">Làm lại Quiz</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Error Toast -->
+        <div class="toast" id="toast">
+            <span class="toast-icon">⚠️</span>
+            <span class="toast-message" id="toast-message"></span>
+        </div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+    <script src="/static/app.js"></script>
+</body>
+</html>
