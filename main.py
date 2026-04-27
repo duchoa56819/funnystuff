@@ -1,4 +1,5 @@
 import os
+import uvicorn
 import re
 import json
 import tempfile
@@ -270,3 +271,10 @@ app.mount("/static", StaticFiles(directory=str(static_dir)), name="static")
 @app.get("/")
 async def root():
     return FileResponse(str(static_dir / "index.html"))
+
+
+if __name__ == "__main__":
+    # Render assigns a port via the PORT environment variable
+    port = int(os.environ.get("PORT", 8000))
+    # Must bind to 0.0.0.0 for external access on Render/Docker
+    uvicorn.run(app, host="0.0.0.0", port=port)
